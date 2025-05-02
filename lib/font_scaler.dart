@@ -82,7 +82,8 @@ class _FontScalerState extends State<FontScaler> {
     _initScale();
     super.initState();
   }
-/////// ****** _initScale ****** //////////
+
+  /////// ****** _initScale ****** //////////
   Future<void> _initScale() async {
     /// At First  checking  savePermanent == true or not.
     if (widget.savePermanent == true) {
@@ -111,12 +112,13 @@ class _FontScalerState extends State<FontScaler> {
           ///
           /// ErrorSummary contains Error Summary
           ErrorSummary(MirzaAppString.errorSummary),
+
           /// ErrorSummary contains Error Description
           ErrorDescription(MirzaAppString.errorDescription),
+
           /// ErrorHint contains Solution to that Error
           ErrorHint(MirzaAppString.errorHint),
         ]);
-
       } else {
         /// if all conditions Meet like presences of SharedPreferences Instance and  savePermanent == true.
         /// then here  _textScale will change with last saved value instead of default .
@@ -124,7 +126,6 @@ class _FontScalerState extends State<FontScaler> {
         /// again MirzaAppString.localKey use to avoid conflicts
         _textScale = widget.prefs.getDouble(MirzaAppString.localKey) ?? 1.0;
       }
-
     }
     /// End of savePermanent condition
     else {
@@ -137,7 +138,6 @@ class _FontScalerState extends State<FontScaler> {
     setState(() {});
   }
 
-
   /////// ****** _saveInLocal ****** //////////
   ///
   /// here _saveInLocal method executes whenever there is new changes in the font Scale
@@ -146,7 +146,7 @@ class _FontScalerState extends State<FontScaler> {
   void _saveInLocal() async {
     /// checking the condition here if widget.savePermanent == true && widget.prefs!=null  then only
     /// it will store the font scale value locally
-    if (widget.savePermanent == true && widget.prefs!=null) {
+    if (widget.savePermanent == true && widget.prefs != null) {
       /// here setting the font Scale in local Storage with localKey to ensure whenever the
       /// app will reopen again with the saved font Scale
       widget.prefs.setDouble(MirzaAppString.localKey, _textScale);
@@ -161,6 +161,7 @@ class _FontScalerState extends State<FontScaler> {
     /// It will return Widget Function type builder for material App builder
     return (BuildContext context, Widget? widgetChild) {
       final mediaQueryData = MediaQuery.of(context);
+
       /// All Magic happened here
       return MediaQuery(
         /// here we are updating the TextScaler factor of our mediaQueryData
@@ -172,12 +173,27 @@ class _FontScalerState extends State<FontScaler> {
     };
   }
 
+  void updateFontScale(FontScale scale, {double? customValue}) {
+    setState(() {
+      if (scale == FontScale.custom) {
+        if (customValue == null) {
+          throw ArgumentError(MirzaAppString.customValueError);
+        }
+        _textScale = customValue;
+      } else {
+        _textScale = fontScaleMap[scale]!;
+      }
+    });
+    _saveInLocal();
+  }
 
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
   }
 }
+
+/////// ****** String Class ****** //////////
 
 class MirzaAppString {
   static final String errorSummary = "Missing SharedPreferences instance";
@@ -194,5 +210,22 @@ class MirzaAppString {
       '    child: MyApp(),\n'
       '  ));\n'
       '}';
-  static final String localKey ="MirzaTextScale";
+  static final String localKey = "MirzaTextScale";
+  static final String customValueError ="customValue must be provided when using FontScale.custom\n Ex: == TScalerProvider.of(context).updateTextScale(FontScale.custom,customValue:2.0);";
 }
+
+/////// ****** enum ****** //////////
+/// here one enum has created for fontScaling the with predefined values below in map
+/// and also have the custom for customization of the font Scale from userEnd
+enum FontScale { micro, small, medium, fDefault, large, xl, custom }
+
+/////// ****** Value Map ****** //////////
+/// fontScaleMap will store the value of the Font Scale
+Map<FontScale, double> fontScaleMap = {
+  FontScale.micro: 0.4,
+  FontScale.small: 0.6,
+  FontScale.medium: 0.8,
+  FontScale.fDefault: 1.0,
+  FontScale.large: 1.6,
+  FontScale.xl: 1.8,
+};
