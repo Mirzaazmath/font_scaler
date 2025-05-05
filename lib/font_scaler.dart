@@ -75,6 +75,10 @@ class _FontScalerState extends State<FontScaler> {
   /// _textScale is the variable that will have the fontScale value.
   /// By default  _textScale value always 1.
   double _textScale = 1;
+  /// Default value variable
+  final double _default=1.0;
+  /// Created a currentFontScale variable of type FontScale with default value
+  FontScale currentFontScale = FontScale.fDefault;
 
   @override
   void initState() {
@@ -124,7 +128,10 @@ class _FontScalerState extends State<FontScaler> {
         /// then here  _textScale will change with last saved value instead of default .
         /// if the user did not saved the font Scale then default value automatically assigned
         /// again MirzaAppString.localKey use to avoid conflicts
-        _textScale = widget.prefs.getDouble(MirzaAppString.localKey) ?? 1.0;
+        _textScale = widget.prefs.getDouble(MirzaAppString.localKey) ?? _default;
+        /// here we are getting the currentFontScale enum  based on the stored value
+        currentFontScale =getFontScaleFromValue(_textScale);
+
       }
     }
     /// End of savePermanent condition
@@ -133,7 +140,9 @@ class _FontScalerState extends State<FontScaler> {
       /// here no need to reassign that same value but ensure the code must error proof
       /// here _textScale is setting to default
 
-      _textScale = 1.0;
+      _textScale = _default;
+      /// here setting the currentFontScale  to default
+      currentFontScale = FontScale.fDefault;
     }
     setState(() {});
   }
@@ -173,23 +182,55 @@ class _FontScalerState extends State<FontScaler> {
     };
   }
 
+  /////// ****** updateFontScale ****** //////////
+  /// updateFontScale method updates _textScale and force the builder to get rebuild to adapt the changes
+  ///  updateFontScale takes to parameters one is for FontScale and other for customValue
+  ///  customValue is need only when user select the FontScale type of Custom
   void updateFontScale(FontScale scale, {double? customValue}) {
     setState(() {
+      /// Condition checked here if user select Custom type from enum then must need to provide customValue as double
       if (scale == FontScale.custom) {
         if (customValue == null) {
+          /// trowing ArgumentError with solution in it
+          /// again MirzaAppString is used to avoid conflicts
           throw ArgumentError(MirzaAppString.customValueError);
         }
+
+        /// Setting the customValue
         _textScale = customValue;
+        /// Setting the currentFontScale to FontScale.custom
+        currentFontScale = FontScale.custom;
       } else {
+        /// Setting the FontScale from fontScaleMap which hold the actual value of that enum
+        /// fontScaleMap is map with type <FontScale, double> it return the double value of the given  enum
         _textScale = fontScaleMap[scale]!;
+       /// Setting the currentFontScale with given Scale
+        currentFontScale = scale;
       }
     });
+
+    /// Calling the _saveInLocal method  to store the fontScale  locally
     _saveInLocal();
+  }
+
+  /////// ****** clear ****** //////////
+/// clear method will clear all setting and set _textScale default
+  void clear() async {
+    _textScale = _default;
+    currentFontScale = FontScale.fDefault;
+    /// if the user select the savePermanent then here we are clearing the widget.prefs
+    if (widget.prefs != null && widget.savePermanent == true) {
+      await widget.prefs.remove(MirzaAppString.localKey);
+    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    /////// ****** Return Widget ****** //////////
+    /// here FontScalerProvider it return with the given child {root Widget} and passes stateWidget for FontScalerProvider
+    /// to Access all the code from this class also
+    return FontScalerProvider(stateWidget: this, child: widget.child);
   }
 }
 
@@ -211,21 +252,48 @@ class MirzaAppString {
       '  ));\n'
       '}';
   static final String localKey = "MirzaTextScale";
-  static final String customValueError ="customValue must be provided when using FontScale.custom\n Ex: == TScalerProvider.of(context).updateTextScale(FontScale.custom,customValue:2.0);";
+  static final String customValueError =
+      "customValue must be provided when using FontScale.custom\n Ex: == TScalerProvider.of(context).updateTextScale(FontScale.custom,customValue:2.0);";
 }
 
 /////// ****** enum ****** //////////
 /// here one enum has created for fontScaling the with predefined values below in map
 /// and also have the custom for customization of the font Scale from userEnd
-enum FontScale { micro, small, medium, fDefault, large, xl, custom }
+enum FontScale {
+  ultraMicro,
+  micro,
+  extraSmall,
+  small,
+  medium,
+  fDefault,
+  large,
+  extraLarge,
+  doubleXL,
+  ultraXL,
+  custom,
+}
 
 /////// ****** Value Map ****** //////////
 /// fontScaleMap will store the value of the Font Scale
 Map<FontScale, double> fontScaleMap = {
+  FontScale.ultraMicro: 0.3,
   FontScale.micro: 0.4,
-  FontScale.small: 0.6,
-  FontScale.medium: 0.8,
+  FontScale.extraSmall: 0.6,
+  FontScale.small: 0.8,
+  FontScale.medium: 0.9,
   FontScale.fDefault: 1.0,
-  FontScale.large: 1.6,
-  FontScale.xl: 1.8,
+  FontScale.large: 1.2,
+  FontScale.extraLarge: 1.4,
+  FontScale.doubleXL: 1.6,
+  FontScale.ultraXL: 1.8,
 };
+/////// ****** getFontScaleFromValue ****** //////////
+/// this will return the key based on  the value if the value not exist then it return custom
+FontScale getFontScaleFromValue(double value) {
+  return fontScaleMap.entries
+      .firstWhere(
+        (entry) => entry.value == value,
+    orElse: () => const MapEntry(FontScale.custom, -1),
+  )
+      .key;
+}
