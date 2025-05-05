@@ -189,4 +189,7 @@ FontScalerProvider.of(context).updateTextScale(FontScale.custom, customValue: 1.
 
 Star project on  <a href="https://github.com/Mirzaazmath/font_scaler">Github</a>
 
+## Author
+
+<a href="https://github.com/Mirzaazmath" target="_blank"><img src="https://github.com/Mirzaazmath/flutter_60_ui_challange/blob/main/ui_4_watch_store/assets/profile.jpeg" height="60" width ="60"  > </a>
 
