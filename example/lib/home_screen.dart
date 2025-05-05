@@ -8,6 +8,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final primaryColor = Colors.deepPurpleAccent;
+    // This will return the currentFontScale whenEver the fontScale Changes
+    final currentFontScale =FontScalerProvider.of(context).currentFontScale;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -18,19 +20,20 @@ class HomeScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
+                  // updateFontScale will update font by given Enum
                   FontScalerProvider.of(context).updateFontScale(FontScale.micro);
                 },
                 child: Container(
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color:currentFontScale==FontScale.micro?primaryColor: Colors.white,
                     border: Border.all(color: primaryColor),
                   ),
                   child: Icon(
                     Icons.text_fields_outlined,
                     size: 14,
-                    color: Colors.black,
+                    color:currentFontScale==FontScale.micro?Colors.white: Colors.black,
                   ),
                 ),
               ),
@@ -42,31 +45,32 @@ class HomeScreen extends StatelessWidget {
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color:currentFontScale==FontScale.fDefault?primaryColor: Colors.white,
                     border: Border.all(color: primaryColor),
                   ),
                   child: Icon(
                     Icons.text_fields_outlined,
                     size: 20,
-                    color: Colors.black,
+                    color: currentFontScale==FontScale.fDefault? Colors.white:Colors.black,
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  FontScalerProvider.of(context).updateFontScale(FontScale.ultraXL);
+                   // updateFontScale will update font by given custom double value
+                  FontScalerProvider.of(context).updateFontScale(FontScale.custom,customValue: 2.2);
                 },
                 child: Container(
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color:currentFontScale==FontScale.custom?primaryColor: Colors.white,
                     border: Border.all(color: primaryColor),
                   ),
                   child: Icon(
                     Icons.text_fields_outlined,
                     size: 28,
-                    color: Colors.black,
+                    color:currentFontScale==FontScale.custom?Colors.white: Colors.black,
                   ),
                 ),
               ),

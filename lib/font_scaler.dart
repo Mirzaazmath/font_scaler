@@ -32,10 +32,19 @@ class FontScalerProvider extends InheritedWidget {
   }
 
   ///  here is the OF method from which we can access all code from this class and FontScaler.
-  static _FontScalerState of(BuildContext context) =>
-      context
-          .dependOnInheritedWidgetOfExactType<FontScalerProvider>()!
-          .stateWidget;
+  static _FontScalerState of(BuildContext context) {
+    /// Here we are checking the condition to ensure root widget must be wrap with FontScaler
+    if (context
+            .dependOnInheritedWidgetOfExactType<FontScalerProvider>()
+            ?.stateWidget ==
+        null) {
+      /// Throwing the custom Error with Solution
+      throw ArgumentError(MirzaAppString.initializeError);
+    }
+    return context
+        .dependOnInheritedWidgetOfExactType<FontScalerProvider>()!
+        .stateWidget;
+  }
 }
 
 /////////// ******* FontScaler Class ******** //////////
@@ -75,8 +84,10 @@ class _FontScalerState extends State<FontScaler> {
   /// _textScale is the variable that will have the fontScale value.
   /// By default  _textScale value always 1.
   double _textScale = 1;
+
   /// Default value variable
-  final double _default=1.0;
+  final double _default = 1.0;
+
   /// Created a currentFontScale variable of type FontScale with default value
   FontScale currentFontScale = FontScale.fDefault;
 
@@ -128,10 +139,11 @@ class _FontScalerState extends State<FontScaler> {
         /// then here  _textScale will change with last saved value instead of default .
         /// if the user did not saved the font Scale then default value automatically assigned
         /// again MirzaAppString.localKey use to avoid conflicts
-        _textScale = widget.prefs.getDouble(MirzaAppString.localKey) ?? _default;
-        /// here we are getting the currentFontScale enum  based on the stored value
-        currentFontScale =getFontScaleFromValue(_textScale);
+        _textScale =
+            widget.prefs.getDouble(MirzaAppString.localKey) ?? _default;
 
+        /// here we are getting the currentFontScale enum  based on the stored value
+        currentFontScale = getFontScaleFromValue(_textScale);
       }
     }
     /// End of savePermanent condition
@@ -141,6 +153,7 @@ class _FontScalerState extends State<FontScaler> {
       /// here _textScale is setting to default
 
       _textScale = _default;
+
       /// here setting the currentFontScale  to default
       currentFontScale = FontScale.fDefault;
     }
@@ -198,13 +211,15 @@ class _FontScalerState extends State<FontScaler> {
 
         /// Setting the customValue
         _textScale = customValue;
+
         /// Setting the currentFontScale to FontScale.custom
         currentFontScale = FontScale.custom;
       } else {
         /// Setting the FontScale from fontScaleMap which hold the actual value of that enum
         /// fontScaleMap is map with type <FontScale, double> it return the double value of the given  enum
         _textScale = fontScaleMap[scale]!;
-       /// Setting the currentFontScale with given Scale
+
+        /// Setting the currentFontScale with given Scale
         currentFontScale = scale;
       }
     });
@@ -214,10 +229,11 @@ class _FontScalerState extends State<FontScaler> {
   }
 
   /////// ****** clear ****** //////////
-/// clear method will clear all setting and set _textScale default
+  /// clear method will clear all setting and set _textScale default
   void clear() async {
     _textScale = _default;
     currentFontScale = FontScale.fDefault;
+
     /// if the user select the savePermanent then here we are clearing the widget.prefs
     if (widget.prefs != null && widget.savePermanent == true) {
       await widget.prefs.remove(MirzaAppString.localKey);
@@ -252,8 +268,15 @@ class MirzaAppString {
       '  ));\n'
       '}';
   static final String localKey = "MirzaTextScale";
+  static final String initializeError =
+      "The root class must be wrap with FontScaler\nSolution:\n"
+      'void main(){\n'
+      '  runApp(FontScaler(\n'
+      '    child: MyApp(),\n'
+      '  ));\n'
+      '}';
   static final String customValueError =
-      "customValue must be provided when using FontScale.custom\n Ex: == TScalerProvider.of(context).updateTextScale(FontScale.custom,customValue:2.0);";
+      "customValue must be provided when using FontScale.custom\n Ex: == FontScalerProvider.of(context).updateTextScale(FontScale.custom,customValue:2.0);";
 }
 
 /////// ****** enum ****** //////////
@@ -276,16 +299,16 @@ enum FontScale {
 /////// ****** Value Map ****** //////////
 /// fontScaleMap will store the value of the Font Scale
 Map<FontScale, double> fontScaleMap = {
-  FontScale.ultraMicro: 0.3,
-  FontScale.micro: 0.4,
+  FontScale.ultraMicro: 0.4,
+  FontScale.micro: 0.5,
   FontScale.extraSmall: 0.6,
   FontScale.small: 0.8,
   FontScale.medium: 0.9,
   FontScale.fDefault: 1.0,
-  FontScale.large: 1.2,
-  FontScale.extraLarge: 1.4,
-  FontScale.doubleXL: 1.6,
-  FontScale.ultraXL: 1.8,
+  FontScale.large: 1.4,
+  FontScale.extraLarge: 1.6,
+  FontScale.doubleXL: 1.8,
+  FontScale.ultraXL: 2.0,
 };
 /////// ****** getFontScaleFromValue ****** //////////
 /// this will return the key based on  the value if the value not exist then it return custom
@@ -293,7 +316,7 @@ FontScale getFontScaleFromValue(double value) {
   return fontScaleMap.entries
       .firstWhere(
         (entry) => entry.value == value,
-    orElse: () => const MapEntry(FontScale.custom, -1),
-  )
+        orElse: () => const MapEntry(FontScale.custom, -1),
+      )
       .key;
 }
