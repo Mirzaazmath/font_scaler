@@ -155,18 +155,24 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(width: 30),
                 Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: primaryColor),
-                      borderRadius: BorderRadius.circular(10),
-                      color: primaryColor,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "ADD TO CART",
-                      style: textTheme.labelLarge?.copyWith(
-                        color: Colors.white,
+                  child: GestureDetector(
+                    onTap: (){
+                      //  This Will Clear the change and remove from local storage and set back to default fontScale
+                      FontScalerProvider.of(context).clear();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: primaryColor),
+                        borderRadius: BorderRadius.circular(10),
+                        color: primaryColor,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "ADD TO CART",
+                        style: textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

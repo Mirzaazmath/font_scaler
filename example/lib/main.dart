@@ -1,10 +1,12 @@
 import 'package:example/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_scaler/font_scaler.dart';
-void main(){
+
+void main() {
   // Need to Wrap MyApp with FontScaler
   runApp(FontScaler(child: MyApp()));
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

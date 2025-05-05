@@ -16,8 +16,10 @@ dependencies:
 
 
   cupertino_icons: ^1.0.8
+  shared_preferences: any
   font_scaler:
     path: ../
+
 
 dev_dependencies:
   flutter_test:
