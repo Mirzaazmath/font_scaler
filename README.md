@@ -27,7 +27,7 @@ and the Flutter guide for
 </ul>
 
 ## Result
-<img src ="https://github.com/Mirzaazmath/font_scaler/blob/dev/example/output/result.gif" height ="400">
+<img src ="https://github.com/Mirzaazmath/font_scaler/blob/main/ss/result.gif" height ="400">
 
 
 ## Getting started
