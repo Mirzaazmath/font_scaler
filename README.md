@@ -85,7 +85,31 @@ FontScalerProvider.of(context).updateTextScale(FontScale.custom, customValue: 2.
 
 ```
 
-4. Get the current Selected Font Scale type 
+4. Here is the list of enum you can use
+   
+```dart
+// Default  Enum  
+
+enum FontScale {
+  ultraMicro,
+  micro,
+  extraSmall,
+  small,
+  medium,
+  fDefault,
+  large,
+  extraLarge,
+  doubleXL,
+  ultraXL,
+  custom,
+}
+// Just Pass like this
+// EX:
+FontScalerProvider.of(context).updateTextScale(FontScale.medium);
+```
+  
+
+5. Get the current Selected Font Scale type 
    
 ```dart
 // This will return the currentFontScale 
