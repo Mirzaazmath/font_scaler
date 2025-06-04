@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Updated the documentation
+
 ## 1.0.1
 
 * Added Screenshot and update Readme with Enum and more information
