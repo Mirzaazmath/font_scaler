@@ -37,7 +37,7 @@ In the pubspec.yaml of your flutter project, add the following dependency:
 ```dart
 dependencies:
   ...
-  font_scaler: ^1.0.0
+  font_scaler: ^1.0.2
 
 ```
 Import it:
@@ -143,7 +143,7 @@ In the pubspec.yaml of your flutter project, add the following dependency:
 ```dart
 dependencies:
   ...
-  font_scaler: ^1.0.0
+  font_scaler: ^1.0.2
   shared_preferences: any
 
 ```

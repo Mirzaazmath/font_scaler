@@ -1,6 +1,6 @@
 name: font_scaler
 description: "FontScaler is a lightweight Flutter package that allows you to dynamically adjust the text scale across your entire app. It supports predefined scale levels (like small, medium, large) and a custom mode for user-defined scaling. Optional persistent storage using SharedPreferences lets you retain the user’s preference across sessions."
-version: 1.0.1
+version: 1.0.2
 homepage: "https://github.com/Mirzaazmath"
 repository: "https://github.com/Mirzaazmath/font_scaler"
 
