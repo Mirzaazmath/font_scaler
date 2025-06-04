@@ -79,9 +79,9 @@ class MyApp extends StatelessWidget {
    
 ```dart
 // default Option
-FontScalerProvider.of(context).updateTextScale(FontScale.large);
+FontScalerProvider.of(context).updateFontScale(FontScale.large);
 // Custom option with customValue
-FontScalerProvider.of(context).updateTextScale(FontScale.custom, customValue: 2.4);
+FontScalerProvider.of(context).updateFontScale(FontScale.custom, customValue: 2.4);
 
 ```
 
@@ -105,7 +105,7 @@ enum FontScale {
 }
 // Just Pass like this
 // EX:
-FontScalerProvider.of(context).updateTextScale(FontScale.medium);
+FontScalerProvider.of(context).updateFontScale(FontScale.medium);
 ```
   
 
@@ -125,7 +125,7 @@ FontScalerProvider.of(context).currentFontScale;
 ElevatedButton(
   onPressed: () {
     FontScalerProvider.of(context)
-        .updateTextScale(FontScale.custom, customValue: 1.25);
+        .updateFontScale(FontScale.custom, customValue: 1.25);
   },
   child: Text("Increase Font Size"),
 );
@@ -194,9 +194,9 @@ class MyApp extends StatelessWidget {
    
 ```dart
 // default Option
-FontScalerProvider.of(context).updateTextScale(FontScale.large);
+FontScalerProvider.of(context).updateFontScale(FontScale.large);
 // Custom option with customValue
-FontScalerProvider.of(context).updateTextScale(FontScale.custom, customValue: 1.4);
+FontScalerProvider.of(context).updateFontScale(FontScale.custom, customValue: 1.4);
 
 ```
 4. You can clear the saved font Scale and set it to default
