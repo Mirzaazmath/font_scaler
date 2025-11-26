@@ -1,23 +1,27 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_scaler/font_scaler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main()async{ // Make this Async
+void main() async {
+  // Make this Async
   // Add this Line
   WidgetsFlutterBinding.ensureInitialized();
   // Create SharedPreferences Instance
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // Need to Wrap MyApp with FontScaler
-  runApp(FontScaler(
-    // savePermanent will save the selected fontScale locally
-    // savePermanent work with  SharedPreferences Instance
-    // So Whenever the app reopens the font Scale will be same as user selected last time
-    savePermanent: true,
+  runApp(
+    FontScaler(
+      // savePermanent will save the selected fontScale locally
+      // savePermanent work with  SharedPreferences Instance
+      // So Whenever the app reopens the font Scale will be same as user selected last time
+      savePermanent: true,
       // Need to pass SharedPreferences Instance that will use in storing the data locally
       prefs: prefs,
-      child: MyApp()));
+      child: MyApp(),
+    ),
+  );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -30,6 +34,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -38,7 +43,7 @@ class HomeScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final primaryColor = Colors.deepPurpleAccent;
     // This will return the currentFontScale whenEver the fontScale Changes
-    final currentFontScale =FontScalerProvider.of(context).currentFontScale;
+    final currentFontScale = FontScalerProvider.of(context).currentFontScale;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -50,56 +55,80 @@ class HomeScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   // updateFontScale will update font by given Enum
-                  FontScalerProvider.of(context).updateFontScale(FontScale.micro);
+                  FontScalerProvider.of(
+                    context,
+                  ).updateFontScale(FontScale.micro);
                 },
                 child: Container(
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color:currentFontScale==FontScale.micro?primaryColor: Colors.white,
+                    color:
+                        currentFontScale == FontScale.micro
+                            ? primaryColor
+                            : Colors.white,
                     border: Border.all(color: primaryColor),
                   ),
                   child: Icon(
                     Icons.text_fields_outlined,
                     size: 14,
-                    color:currentFontScale==FontScale.micro?Colors.white: Colors.black,
+                    color:
+                        currentFontScale == FontScale.micro
+                            ? Colors.white
+                            : Colors.black,
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  FontScalerProvider.of(context).updateFontScale(FontScale.fDefault);
+                  FontScalerProvider.of(
+                    context,
+                  ).updateFontScale(FontScale.fDefault);
                 },
                 child: Container(
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color:currentFontScale==FontScale.fDefault?primaryColor: Colors.white,
+                    color:
+                        currentFontScale == FontScale.fDefault
+                            ? primaryColor
+                            : Colors.white,
                     border: Border.all(color: primaryColor),
                   ),
                   child: Icon(
                     Icons.text_fields_outlined,
                     size: 20,
-                    color: currentFontScale==FontScale.fDefault? Colors.white:Colors.black,
+                    color:
+                        currentFontScale == FontScale.fDefault
+                            ? Colors.white
+                            : Colors.black,
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   // updateFontScale will update font by given custom double value
-                  FontScalerProvider.of(context).updateFontScale(FontScale.custom,customValue: 2.2);
+                  FontScalerProvider.of(
+                    context,
+                  ).updateFontScale(FontScale.custom, customValue: 2.2);
                 },
                 child: Container(
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    color:currentFontScale==FontScale.custom?primaryColor: Colors.white,
+                    color:
+                        currentFontScale == FontScale.custom
+                            ? primaryColor
+                            : Colors.white,
                     border: Border.all(color: primaryColor),
                   ),
                   child: Icon(
                     Icons.text_fields_outlined,
                     size: 28,
-                    color:currentFontScale==FontScale.custom?Colors.white: Colors.black,
+                    color:
+                        currentFontScale == FontScale.custom
+                            ? Colors.white
+                            : Colors.black,
                   ),
                 ),
               ),
@@ -185,7 +214,7 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(width: 30),
                 Expanded(
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       //  This Will Clear the change and remove from local storage and set back to default fontScale
                       FontScalerProvider.of(context).clear();
                     },
@@ -216,3 +245,44 @@ class HomeScreen extends StatelessWidget {
 }
 
 List<int> sizeList = [38, 40, 42, 44];
+
+class HomeScreen2 extends StatefulWidget {
+  const HomeScreen2({super.key});
+
+  @override
+  State<HomeScreen2> createState() => _HomeScreen2State();
+}
+
+class _HomeScreen2State extends State<HomeScreen2> {
+  double slideValue = 1;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(30),
+          child: Text(
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(20),
+        height: 100,
+        child: Slider(
+          min: 1,
+          max: 5,
+          value: slideValue,
+          onChanged: (double value) {
+            FontScalerProvider.of(
+              context,
+            ).updateFontScale(FontScale.custom, customValue: value);
+            setState(() {
+              slideValue = value;
+            });
+          },
+        ),
+      ),
+    );
+  }
+}

@@ -37,7 +37,7 @@ In the pubspec.yaml of your flutter project, add the following dependency:
 ```dart
 dependencies:
   ...
-  font_scaler: ^1.0.2
+  font_scaler: ^1.0.3
 
 ```
 Import it:
@@ -117,9 +117,9 @@ FontScalerProvider.of(context).currentFontScale;
 
 ```
    
-## Example Use Case
+## Example Use Case 1
 
-   Let users control font sizes from settings:
+   Let users control font sizes 
    
 ```dart
 ElevatedButton(
@@ -132,6 +132,23 @@ ElevatedButton(
 
 
 ```
+## Example Use Case 2
+
+Let users control font sizes
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    FontScalerProvider.of(context)
+        .updateFontScale(FontScale.custom, customValue: 1.25);
+  },
+  child: Text("Increase Font Size"),
+);
+
+
+```
+
+
 ## Usage With SharedPreferences 
 
 Using SharedPreferences user can save the selected font Scale locally whenever app
@@ -143,7 +160,7 @@ In the pubspec.yaml of your flutter project, add the following dependency:
 ```dart
 dependencies:
   ...
-  font_scaler: ^1.0.2
+  font_scaler: ^1.0.3
   shared_preferences: any
 
 ```

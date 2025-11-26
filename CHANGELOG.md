@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Added a proper Ui Sample and added one more use-case 
+
 ## 1.0.2
 
 * Updated the documentation
