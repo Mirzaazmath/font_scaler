@@ -26,8 +26,12 @@ and the Flutter guide for
   
 </ul>
 
+
 ## Result
-<img src ="https://github.com/Mirzaazmath/font_scaler/blob/main/ss/result.gif" height ="400">
+
+| Output 1  | Output 2  | 
+|--------------|----------------|
+| <img src="https://github.com/Mirzaazmath/font_scaler/raw/main/ss/result.gif" alt="Output 1" height="400"> | <img src="https://github.com/Mirzaazmath/font_scaler/raw/main/ss/result2.gif" alt="Output 2" height="400"> |
 
 
 ## Getting started
@@ -137,14 +141,19 @@ ElevatedButton(
 Let users control font sizes
 
 ```dart
-ElevatedButton(
-  onPressed: () {
-    FontScalerProvider.of(context)
-        .updateFontScale(FontScale.custom, customValue: 1.25);
-  },
-  child: Text("Increase Font Size"),
-);
-
+        Slider(
+          min: 1,
+          max: 5,
+          value: slideValue,
+          onChanged: (double value) {
+            FontScalerProvider.of(
+              context,
+            ).updateFontScale(FontScale.custom, customValue: value);
+            setState(() {
+              slideValue = value;
+            });
+          },
+        ),
 
 ```
 
@@ -232,5 +241,5 @@ Star project on  <a href="https://github.com/Mirzaazmath/font_scaler">Github</a>
 
 ## Author
 
-<a href="https://github.com/Mirzaazmath" target="_blank"><img src="https://github.com/Mirzaazmath/flutter_60_ui_challange/blob/main/ui_4_watch_store/assets/profile.jpeg" height="60" width ="60"  > </a>
+<a href="https://github.com/Mirzaazmath" target="_blank"><img src="https://github.com/Mirzaazmath/flutter_60_ui_challange/raw/main/ui_4_watch_store/assets/profile.jpeg" height="60" width ="60"  > </a>
 
